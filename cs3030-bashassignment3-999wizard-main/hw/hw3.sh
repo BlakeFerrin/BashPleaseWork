@@ -23,7 +23,8 @@ Usage()
 GetFile()
 {
   printf "Task 2: Checking for data structure\n"
-
+  mkdir -p $custFolder/$(date +"%m")
+  wget -O "$custFolder/$(date +"%m")/presidents.csv" $server_loc/presidents.csv
 }
 
 ################################################################################
@@ -49,9 +50,47 @@ SplitFile()
 #  Main Script
 ################################################################################
 # Check to see if help was called
+sused=false
+aused=false
+fused=false
+while getopts ":s:a:f:h" opt; do 
+   case $opt in
+      h)
+      Usage
+      exit 0
+      ;;
+      s)
+      sused=true
+      ;;
+      a)
+      aused=true
+      ;;
+      f)
+      fused=true
+      ;;
+      \?) # invalid entry
+      echo "Invalid option: -$OPTARG"
+      Usage
+      ;;
+      :) # requrie argument is missing
+      echo "Option -$OPTARG requires an argument"
+      Usage
+      ;;
+   esac
+done
+
+
+if [ $sused = false ] || [ $fused = false ] || [ $aused = false ]
+then
+  # echo "$sused $fused $aused"
+  echo "Missing required parameters"
+  Usage
+  exit 1;
+fi
+
 
 #### Task 1: capture user options using getopts
-
+GetFile
 #### Task 2: Function to wget file from icarus WEB server, create folder and rename it
 
 #### Task 3: Update Date format using SED 
