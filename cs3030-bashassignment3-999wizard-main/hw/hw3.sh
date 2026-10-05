@@ -24,7 +24,7 @@ GetFile()
 {
   printf "Task 2: Checking for data structure\n"
   mkdir -p $custFolder/$(date +"%m")
-  wget -O "$custFolder/$(date +"%m")/presidents.csv" $server_loc/presidents.csv
+  wget -q -O "$custFolder/$(date +"%m")/presidents.csv" $server_loc/presidents.csv
 }
 
 ################################################################################
@@ -33,6 +33,7 @@ GetFile()
 UpdateFile()
 {
   printf "Task 3: Updating date format\n"
+  sed -i.bak -f hw3.sed presidentData/$(date +"%m")/presidents.csv
 
 }
 
@@ -42,7 +43,7 @@ UpdateFile()
 SplitFile()
 {
   printf "Task 4: Spliting file based on century\n"
-
+  awk -F, -v month="$(date +"%m")" -f hw3.awk presidentData/$(date +"%m")/presidents.csv
 }
 
 
@@ -92,9 +93,9 @@ fi
 #### Task 1: capture user options using getopts
 GetFile
 #### Task 2: Function to wget file from icarus WEB server, create folder and rename it
-
+UpdateFile
 #### Task 3: Update Date format using SED 
-
+SplitFile
 #### Task 4: Create files based on Century using SED
 
 #### Task 5: Function to apply awk script 
